@@ -2,6 +2,13 @@
  * @description Virtual DOM을 실제 DOM으로 변환하여 렌더링
  */
 function render(element, container) {
+  // 함수형 컴포넌트 처리
+  if (typeof element.type === "function") {
+    const childElement = element.type(element.props);
+    render(childElement, container);
+    return;
+  }
+
   const dom =
     element.type === "TEXT_ELEMENT"
       ? document.createTextNode(element.props.nodeValue) // 텍스트 노드 처리
