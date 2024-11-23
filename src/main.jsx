@@ -8,6 +8,7 @@ function renderApp() {
   resetStateIndex();
   container.innerHTML = ""; // 이전 내용을 초기화
   const appElement = App();
+  console.log(JSON.stringify(appElement, null, 2));
   render(appElement, container);
 }
 
