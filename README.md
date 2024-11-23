@@ -289,7 +289,101 @@ export { render };
 </details>
 
 ---
+<details>
+<summary><strong>Day 3-4: 상태 관리와 useState 구현</strong></summary>
+
+### 📌 핵심 목표
+
+1. 상태(State)의 개념을 이해하고, 상태 변경에 따라 UI를 업데이트하는 방법을 학습한다.
+2. `useState` 함수를 직접 구현하여 상태를 저장하고 업데이트할 수 있다.
+3. 상태 변경 시 컴포넌트를 재렌더링하여 화면을 동적으로 업데이트한다.
+
+---
+
+### 📚 핵심 단어
+
+1. **상태(State)**  
+   - **일반적인 의미**: 애플리케이션의 현재 데이터 또는 상황을 나타내는 값.  
+   - **React에서의 사용**: 컴포넌트 내부에서 변화하는 데이터를 관리하여 UI에 반영하는 역할을 한다.
+
+2. **훅(Hook)**  
+   - 함수형 컴포넌트에서 상태와 생명주기 기능을 사용할 수 있게 해주는 기능.  
+   - 대표적인 예로 `useState`, `useEffect` 등이 있다.
+
+3. **재렌더링(Re-rendering)**  
+   - 상태나 props의 변경으로 인해 컴포넌트가 다시 렌더링되어 UI가 업데이트되는 과정.
+
+---
+
+### 🛠️ 필수 작업
+
+1. `useState` 함수를 구현하여 상태를 관리한다.
+2. 상태 변경 시 컴포넌트를 재렌더링하는 메커니즘을 만든다.
+3. 카운터 컴포넌트를 작성하여 상태 변경에 따른 UI 변화를 확인한다.
+
+---
+
+#### 코드 예제
+
+```javascript
+// core/useState.js
+let state = [];
+let stateIndex = 0;
+let rerender = null;
+
+export function useState(initialValue) {
+  const currentIndex = stateIndex++;
+  state[currentIndex] = state[currentIndex] !== undefined ? state[currentIndex] : initialValue;
+
+  function setState(newValue) {
+    state[currentIndex] = newValue;
+    rerender && rerender();
+  }
+
+  return [state[currentIndex], setState];
+}
+
+export function setRerenderFunc(rerenderFunc) {
+  rerender = rerenderFunc;
+}
+
+export function resetStateIndex() {
+  stateIndex = 0;
+}
+```
+
+---
+
+### 💡 배운 점
+
+1. **상태 관리의 중요성**  
+   - 상태는 애플리케이션이 동적으로 동작하는 데 핵심적인 역할을 한다.
+   - 사용자 입력이나 이벤트에 따라 상태를 변경하고, 이를 UI에 반영하여 사용자와의 상호작용을 가능하게 한다.
+
+2. **useState의 동작 원리**  
+   - `useState`를 통해 상태 값을 저장하고, 해당 상태를 변경할 수 있는 setState 함수를 얻을 수 있다.
+   - 상태 변경 시 `setState`를 호출하면 내부적으로 상태가 업데이트되고, 컴포넌트가 재렌더링되어 변경 사항이 UI에 반영된다.
+
+3. **재렌더링 메커니즘 구현 방**  
+   - 상태 변경 시 전체 애플리케이션을 재렌더링하여 최신 상태가 화면에 표시되도록 구현했다.
+   - 이를 위해 렌더링 함수를 재호출하고, 상태 인덱스를 초기화하여 상태 관리의 일관성을 유지했다.
+
+4. **상태 인덱스 관리의 필요성**
+   - 여러 개의 상태를 관리할 때 각 상태가 올바른 값을 참조하도록 상태 인덱스를 사용했다.
+   - 렌더링마다 상태 인덱스를 초기화하고, useState 호출 순서를 유지하여 상태 불일치 문제를 방지했다.
+
+5. **함수형 컴포넌트에서의 상태 관리**
+   - 클래스형 컴포넌트 없이도 함수형 컴포넌트에서 훅을 사용하여 상태를 관리할 수 있음을 학습했다.
+   - 이는 코드의 간결성과 유지 보수성을 높여준다.
+
+---
+
+### 💡 회고
+
+`useState`를 직접 구현하면서 상태 관리와 재렌더링의 원리를 깊이 있게 이해할 수 있었다. 특히 상태 인덱스를 활용하여 여러 상태를 관리하는 방법과, 상태 변경 시 컴포넌트를 재렌더링하여 UI를 업데이트하는 과정이 인상적이었다. 
+카운터 예제를 통해 이러한 개념을 실습하며 React의 핵심 기능을 체득할 수 있었다.
 
 </details>
 
+---
 
