@@ -1,3 +1,7 @@
-export default function Content({ description }) {
-  return <p>{description}</p>;
+export default function Content() {
+  return (
+    <main>
+      <p>설명이에요</p>
+    </main>
+  );
 }
