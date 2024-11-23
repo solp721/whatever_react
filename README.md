@@ -181,6 +181,117 @@ React의 핵심 원리를 배우는 데 중요한 시간이었음에도, 하루�
 </details>
 
 ---
+
 <details>
 <summary><h2>Week 2</h2></summary>
+
+---
+
+## Week 2 목표
+
+Virtual DOM을 실제 DOM으로 렌더링하는 과정을 이해하고, 상태 관리(useState)를 직접 구현하여 React의 상태 관리 메커니즘을 깊이 있게 이해한다.
+
+---
+
+<details>
+<summary><strong>Day 1-2: Virtual DOM을 실제 DOM으로 렌더링하기</strong></summary>
+
+### 📌 핵심 목표
+
+Virtual DOM을 순회하여 실제 DOM을 생성하는 `render` 함수를 구현하고, 재귀적으로 DOM 트리를 생성하는 방법을 이해한다.
+
+### 📚 핵심 단어
+
+1. **렌더링 (Rendering)**
+   - **일반적인 의미**: 데이터를 시각적 요소로 변환하여 사용자 화면에 표시하는 과정.
+   - **React에서의 사용**: Virtual DOM을 기반으로 실제 DOM을 생성하거나 업데이트하여 효율적으로 UI를 보여주는 메커니즘.
+
+2. **재귀 (Recursion)**
+   - 함수가 자기 자신을 호출하는 프로그래밍 기법.
+   - 트리 구조의 데이터를 순회하거나 처리할 때 유용하게 사용된다.
+
+### 🛠️ 필수 작업
+
+- `render` 함수를 구현하여 Virtual DOM을 실제 DOM으로 변환한다.
+  - 노드의 `type`이 문자열인 경우 DOM 요소를 생성한다.
+  - 노드의 `type`이 "TEXT_ELEMENT"인 경우 텍스트 노드를 생성한다.
+  - `props`를 읽어 DOM 속성을 설정한다.
+  - 자식 노드가 있는 경우 재귀적으로 `render` 함수를 호출하여 자식 노드를 처리한다.
+- 간단한 Virtual DOM 객체를 만들어 `render` 함수를 테스트한다.
+
+#### 코드 예제
+
+````javascript
+// render.js
+function render(element, container) {
+  // 함수형 컴포넌트 처리
+  if (typeof element.type === "function") {
+    const childElement = element.type(element.props);
+    render(childElement, container);
+    return;
+  }
+
+  const dom =
+    element.type === "TEXT_ELEMENT"
+      ? document.createTextNode(element.props.nodeValue) // 텍스트 노드 처리
+      : document.createElement(element.type); // DOM 노드 생성
+
+  // 프로퍼티 처리
+  const isProperty = (key) => key !== "children";
+  Object.keys(element.props || {})
+    .filter(isProperty)
+    .forEach((name) => {
+      try {
+        // 이벤트 핸들러 또는 데이터 속성 처리
+        if (name.startsWith("on")) {
+          const eventType = name.toLowerCase().substring(2);
+          dom.addEventListener(eventType, element.props[name]);
+        } else if (name in dom) {
+          dom[name] = element.props[name];
+        } else {
+          dom.setAttribute(name, element.props[name]);
+        }
+      } catch (error) {
+        console.warn(`${name}:`, error);
+      }
+    });
+
+  // 자식 요소 재귀 렌더링
+  const children = element.props.children || [];
+  (Array.isArray(children) ? children : [children]).forEach((child) => {
+    render(child, dom);
+  });
+
+  container.appendChild(dom);
+}
+
+export { render };
+
+````
+
+### 💡 배운 점
+
+1. **렌더링과 Virtual DOM**
+   - 렌더링은 데이터를 UI로 변환하여 사용자 화면에 출력하는 과정이며, React에서는 Virtual DOM을 사용해 효율적인 UI 업데이트를 가능하게 한다.
+   - `render` 함수는 Virtual DOM 객체를 기반으로 실제 DOM 트리를 생성하고, 이를 루트 컨테이너에 추가하는 역할을 한다.
+
+2. **재귀를 활용한 트리 구조 순회**
+   - 트리 구조의 데이터를 재귀적으로 순회하며 DOM 노드를 생성하고 부모-자식 관계를 설정하는 과정을 체득했다.
+   - 복잡한 중첩 구조의 Virtual DOM 객체도 재귀를 통해 효과적으로 처리할 수 있다는 점을 이해했다.
+
+3. **속성 및 텍스트 처리**
+   - Virtual DOM 객체의 `props`를 읽어 DOM 속성을 설정하는 방법과 텍스트 노드를 처리하는 방법을 배웠다.
+
+### 💡 회고
+
+`render` 함수를 구현하면서 Virtual DOM 객체가 실제 DOM으로 변환되어 브라우저 화면에 표시되는 과정을 깊이 이해할 수 있었다.  
+특히 재귀를 통해 트리 구조를 순회하며 요소를 생성하고 부모 노드에 추가하는 방식이 흥미로웠다.  
+Virtual DOM과 렌더링의 원리를 배운 이번 과정은 이후 React에서의 상태 관리나 더 복잡한 UI를 구현하는 데 있어 기본기를 다지는 데 큰 도움이 될 것이다.
+
 </details>
+
+---
+
+</details>
+
+
