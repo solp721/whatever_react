@@ -1,24 +1,20 @@
 function createElement(type, props, ...children) {
-  // 함수형 컴포넌트인지 확인
+  // 함수형 컴포넌트인지 확인하고 즉시 실행
   if (typeof type === "function") {
     return type({ ...props, children });
   }
 
-  const element = {
+  return {
     type,
-    ref: props?.ref || null,
-    key: props?.key || null,
     props: {
       ...props,
       children: children
         .flat()
         .map((child) =>
-          typeof child === "object" ? child : createTextElement(String(child))
+          typeof child === "object" ? child : createTextElement(child)
         ),
     },
   };
-
-  return element;
 }
 
 function createTextElement(text) {

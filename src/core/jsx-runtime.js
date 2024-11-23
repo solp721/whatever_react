@@ -1,9 +1,12 @@
 import { createElement } from "./createElement";
 
 export function jsx(type, props, key) {
-  return createElement(type, { ...props, key }, ...(props?.children || []));
+  props = props || {};
+  const { children = [], ...rest } = props;
+  const childArray = Array.isArray(children) ? children : [children];
+  return createElement(type, { ...rest, key }, ...childArray);
 }
 
 export function jsxs(type, props, key) {
-  return createElement(type, { ...props, key }, ...(props?.children || []));
+  return jsx(type, props, key);
 }
