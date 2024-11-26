@@ -522,11 +522,116 @@ TODO 리스트 애플리케이션을 작성하며 상태 관리와 이벤트 처
 
 ## Week 3 목표
 
-week3
+Virtual DOM 비교(diffing) 알고리즘을 구현하고, 이벤트 처리와 추가적인 훅(hook)인 useEffect를 만들어 React의 렌더링 원리를 이해한다.
+
+---
+<details>
+<summary><strong>Day 1-2: Virtual DOM 비교(diffing) 알고리즘 구현</strong></summary>
+
+### 📌 핵심 목표
+
+이전 Virtual DOM과 새로운 Virtual DOM을 비교하여 변경된 부분만 실제 DOM에 반영하는 `diff` 알고리즘을 구현하고, 최소한의 DOM 업데이트를 통해 성능 최적화를 이해한다.
+
+### 📚 핵심 단어
+
+1. **Virtual DOM**
+   - React에서 UI 업데이트를 효율적으로 수행하기 위해 사용하는 가벼운 JavaScript 객체 기반의 DOM 표현.
+   - 실제 DOM과의 차이를 계산하여 필요한 부분만 업데이트한다.
+
+2. **diffing 알고리즘**
+   - 이전 Virtual DOM과 새로운 Virtual DOM을 비교하여 변경된 부분을 찾아내는 알고리즘.
+   - DOM 조작의 최소화를 목표로 한다.
+
+3. **최소 DOM 업데이트**
+   - 변경된 노드만 실제 DOM에 반영하여 성능을 최적화하는 방식.
+
+### 🛠️ 필수 작업
+
+- `diff` 알고리즘을 구현하여 이전 Virtual DOM과 새로운 Virtual DOM을 비교하고, 필요한 부분만 업데이트한다.
+  - 노드가 새로 추가된 경우 DOM에 추가한다.
+  - 노드가 삭제된 경우 DOM에서 제거한다.
+  - 노드의 속성이나 텍스트가 변경된 경우 DOM을 업데이트한다.
+  - 자식 노드를 재귀적으로 비교한다.
+
+#### 코드 예제
+
+````javascript
+// diff.js
+function diff(oldVDOM, newVDOM, container, index = 0) {
+  const currentDom = container.childNodes[index];
+
+  if (!oldVDOM) {
+    const newDom = createDom(newVDOM);
+    container.appendChild(newDom);
+  } else if (!newVDOM) {
+    if (currentDom) {
+      container.removeChild(currentDom);
+    }
+  } else if (oldVDOM.type !== newVDOM.type) {
+    const newDom = createDom(newVDOM);
+    container.replaceChild(newDom, currentDom);
+  } else if (typeof newVDOM.type === "string") {
+    updateDom(currentDom, oldVDOM.props, newVDOM.props);
+
+    const oldChildren = oldVDOM.props.children || [];
+    const newChildren = newVDOM.props.children || [];
+    const max = Math.max(oldChildren.length, newChildren.length);
+
+    for (let i = 0; i < max; i++) {
+      diff(oldChildren[i], newChildren[i], currentDom, i);
+    }
+  } else if (oldVDOM.type === "TEXT_ELEMENT") {
+    if (oldVDOM.props.nodeValue !== newVDOM.props.nodeValue) {
+      currentDom.textContent = newVDOM.props.nodeValue;
+    }
+  }
+}
+
+export { diff };
+````
+
+### 💡 배운 점
+
+1. **Virtual DOM 비교의 중요성**
+   - Virtual DOM은 UI를 효율적으로 업데이트하는 데 중요한 역할을 한다.
+   - `diff` 알고리즘을 통해 변경된 부분만 DOM에 반영함으로써 전체 DOM 재렌더링의 비용을 줄일 수 있다.
+
+2. **재귀를 통한 트리 비교**
+   - 트리 구조를 재귀적으로 순회하며 노드를 비교하고, 변경 사항에 따라 DOM을 업데이트하는 원리를 이해했다.
+   - 트리 구조의 데이터를 처리하는 데 재귀가 효과적인 도구임을 체감했다.
+
+3. **최소 DOM 업데이트**
+   - 속성 변경, 노드 추가/삭제, 텍스트 변경 등 실제 DOM 조작을 최소화하여 렌더링 성능을 향상시킬 수 있음을 배웠다.
+
+### 💡 회고
+
+`diff` 알고리즘 구현을 통해 Virtual DOM의 비교 및 최소 DOM 업데이트의 중요성을 깨달았다.  
+특히 재귀적으로 트리를 순회하며 변경 사항을 찾아내는 과정이 흥미로웠으며, DOM 업데이트 비용을 최소화하는 원리를 구체적으로 이해할 수 있었다.  
+
+### ✅ 확인한 점
+
+카운터 앱에서 숫자가 변경될 때, `diff` 함수의 비교 로그를 통해 **이전 Virtual DOM과 새로운 Virtual DOM이 정확히 비교**되었음을 확인하였다.  
+아래는 로그 예시로, 숫자가 변경되었을 때 `TEXT_ELEMENT` 노드만 업데이트되었음을 보여준다:
+
+```plaintext
+노드 비교 : 
+이전: { type: "TEXT_ELEMENT", props: { nodeValue: 0, children: [] } }
+현재: { type: "TEXT_ELEMENT", props: { nodeValue: 1, children: [] } }
+```
+이와 동시에, 나머지 UI 요소들은 변경되지 않고 그대로 유지되었음을 확인하였다. 이는 diff 알고리즘이 최소한의 DOM 업데이트를 수행했음을 증명한다.
+
+</details> 
 
 ---
 
+<details>
+<summary><strong>Day 3-4: </strong></summary>
 </details>
 
 ---
+
+<details>
+<summary><strong>Day 5-6: </strong></summary>
+</details>
+
 
