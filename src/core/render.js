@@ -1,36 +1,41 @@
 function diff(oldVDOM, newVDOM, container, index = 0) {
-  // 현재 DOM 노드 가져오기
   const currentDom = container.childNodes[index];
 
+  console.log("노드 비교 :", { 이전: oldVDOM, 현재: newVDOM });
+
+  // 이전 Virtual DOM이 없을 경우 (새로운 노드 추가)
   if (!oldVDOM) {
-    // 이전 Virtual DOM이 없으면 새 Virtual DOM을 생성하여 추가
-    const newDom = createDom(newVDOM);
-    container.appendChild(newDom);
-  } else if (!newVDOM) {
-    // 새로운 Virtual DOM이 없으면 기존 DOM을 제거
+    const newDom = createDom(newVDOM); // 새로운 DOM 생성
+    container.appendChild(newDom); // 부모 컨테이너에 추가
+  }
+  // 새로운 Virtual DOM이 없을 경우 (기존 노드 삭제)
+  else if (!newVDOM) {
     if (currentDom) {
-      container.removeChild(currentDom);
+      container.removeChild(currentDom); // 기존 DOM 노드 삭제
     }
-  } else if (oldVDOM.type !== newVDOM.type) {
-    // Virtual DOM의 타입이 다르면 기존 DOM을 교체
-    const newDom = createDom(newVDOM);
-    container.replaceChild(newDom, currentDom);
-  } else if (typeof newVDOM.type === "string") {
-    // Virtual DOM 타입이 동일하면 속성을 업데이트하고, 자식 노드 비교
-    updateDom(currentDom, oldVDOM.props, newVDOM.props);
+  }
+  // Virtual DOM 타입이 다른 경우 (노드 교체)
+  else if (oldVDOM.type !== newVDOM.type) {
+    const newDom = createDom(newVDOM); // 새로운 DOM 생성
+    container.replaceChild(newDom, currentDom); // 기존 DOM을 새 DOM으로 교체
+  }
+  // 같은 타입의 노드인 경우 (속성 업데이트 및 자식 노드 비교)
+  else if (typeof newVDOM.type === "string") {
+    updateDom(currentDom, oldVDOM.props, newVDOM.props); // DOM 속성 업데이트
 
-    const oldChildren = oldVDOM.props.children || [];
-    const newChildren = newVDOM.props.children || [];
-    const max = Math.max(oldChildren.length, newChildren.length);
+    const oldChildren = oldVDOM.props.children || []; // 이전 자식 노드
+    const newChildren = newVDOM.props.children || []; // 새로운 자식 노드
+    const max = Math.max(oldChildren.length, newChildren.length); // 비교할 자식 노드의 최대 길이
 
-    // 자식 노드 순회 및 비교
+    // 모든 자식 노드를 재귀적으로 비교
     for (let i = 0; i < max; i++) {
       diff(oldChildren[i], newChildren[i], currentDom, i);
     }
-  } else if (oldVDOM.type === "TEXT_ELEMENT") {
-    // 텍스트 노드인 경우 텍스트 값 비교 후 업데이트
+  }
+  // 텍스트 노드인 경우 (텍스트 변경 사항 확인 및 업데이트)
+  else if (oldVDOM.type === "TEXT_ELEMENT") {
     if (oldVDOM.props.nodeValue !== newVDOM.props.nodeValue) {
-      currentDom.textContent = newVDOM.props.nodeValue;
+      currentDom.textContent = newVDOM.props.nodeValue; // 텍스트 노드 갱신
     }
   }
 }
