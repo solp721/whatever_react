@@ -4,12 +4,14 @@ import { resetStateIndex, setRerenderFunc } from "./core/useState";
 
 const container = document.getElementById("app");
 
+/**
+ * @description 애플리케이션 렌더링
+ */
 function renderApp() {
   resetStateIndex();
-  container.innerHTML = ""; // 이전 내용을 초기화
-  const appElement = App();
+  const appElement = App(); // Virtual DOM 생성
+  render(appElement, container); // Virtual DOM 렌더링
   console.log(JSON.stringify(appElement, null, 2));
-  render(appElement, container);
 }
 
 // 재렌더링 함수 설정
