@@ -1,7 +1,7 @@
 function diff(oldVDOM, newVDOM, container, index = 0) {
   const currentDom = container.childNodes[index];
 
-  console.log("노드 비교 :", { 이전: oldVDOM, 현재: newVDOM });
+  // console.log("노드 비교 :", { 이전: oldVDOM, 현재: newVDOM });
 
   // 이전 Virtual DOM이 없을 경우 (새로운 노드 추가)
   if (!oldVDOM) {
@@ -51,9 +51,12 @@ function createDom(element) {
   Object.keys(element.props || {}).forEach((name) => {
     if (name !== "children") {
       if (name.startsWith("on")) {
-        // 이벤트 핸들러 추가
-        const eventType = name.toLowerCase().substring(2);
-        dom.addEventListener(eventType, element.props[name]);
+        // 이벤트 핸들러를 DOM 노드에 저장)
+        const eventType = name.toLowerCase();
+        if (!dom[eventType]) {
+          dom[eventType] = element.props[name]; // Virtual DOM에서 핸들러 참조
+          console.log(`이벤트 핸들러 등록: ${eventType}`);
+        }
       } else if (name in dom) {
         // DOM의 기본 속성 처리
         dom[name] = element.props[name];
