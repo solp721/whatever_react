@@ -40,7 +40,7 @@ Vanilla JavaScript로 환경을 구축하고, Babel을 이용해 JSX가 JavaScri
 - JSX가 JavaScript로 변환될 때 `createElement` 함수 호출로 바뀌는 과정을 알게 되었다.
 - Babel 설정에서 `@babel/plugin-transform-react-jsx`와 `runtime: automatic` 옵션을 활용해 JSX 문법을 지원할 수 있었다.
 
-### 💡 회고
+### 💬 회고
 환경 설정과 Babel 트랜스파일링 과정을 배우면서 JSX의 동작 방식을 이해했다.  
 하지만 처음 설정이 잘못되어 디버깅에 많은 시간을 썼고, 한 번에 몰아서 작업하면서 학습의 깊이가 부족했다.
 
@@ -70,6 +70,7 @@ JSX 트랜스파일링 과정을 이해한 후, `createElement` 함수를 직접
   - 객체는 그대로 사용한다.
 - Virtual DOM 객체를 콘솔로 출력해 확인한다.
 
+### 📂 코드예제
 ```javascript
 function createElement(type, props, ...children) {
   const element = {
@@ -101,7 +102,7 @@ function createTextElement(text) {
 - JSX에서 문자열과 숫자가 `TEXT_ELEMENT`로 처리되는 방식을 이해했다.
 - Virtual DOM 구조를 직접 구현하면서 React의 기본 원리를 체감할 수 있었다.
 
-### 💡 회고
+### 💬 회고
 Virtual DOM의 구조를 이해하는 데 큰 도움이 되었다.  
 하지만 출력 결과에서 **텍스트가 한 글자씩 `TEXT_ELEMENT`로 처리되는 문제**가 발생했다.  
 예를 들어, `"Virtual DOM 이해하기"`라는 텍스트가 여러 개의 `TEXT_ELEMENT`로 분리되는 현상이 나타났고, 이는 설계 단계에서 충분히 고민하지 못한 결과다.  
@@ -132,6 +133,8 @@ Virtual DOM을 실제 DOM으로 변환하여 화면에 렌더링하는 `render` 
   - DOM 노드와 프로퍼티를 생성 및 설정한다.
   - 재귀적으로 자식 노드를 렌더링한다.
 
+### 📂 코드 예제
+
 ```javascript
 function render(element, container) {
   const dom =
@@ -154,7 +157,7 @@ function render(element, container) {
 - Virtual DOM에서 실제 DOM으로 변환되는 과정을 알게 되었다.
 - 재귀적으로 DOM 트리를 생성하는 방식의 중요성을 깨달았다.
 
-### 💡 회고
+### 💬 회고
 `render` 함수를 작성하며 Virtual DOM과 실제 DOM 간의 연결 과정을 이해했다.  
 하지만 앞서 언급한 텍스트 한 글자씩 처리되는 문제는 여전히 해결되지 않았고, 그 결과 UI가 의도한 대로 렌더링되지 않았다.  
 이 문제를 근본적으로 해결하지 못한 채 코드 작업을 마쳤고, 이후 작업에 큰 장애가 될 가능성이 높다.
@@ -218,7 +221,7 @@ Virtual DOM을 순회하여 실제 DOM을 생성하는 `render` 함수를 구현
   - `props`를 읽어 DOM 속성을 설정한다.
   - 자식 노드가 있는 경우 재귀적으로 `render` 함수를 호출하여 자식 노드를 처리한다.
 
-#### 코드 예제
+#### 📂 코드 예제
 
 ````javascript
 // render.js
@@ -281,7 +284,7 @@ export { render };
 3. **속성 및 텍스트 처리**
    - Virtual DOM 객체의 `props`를 읽어 DOM 속성을 설정하는 방법과 텍스트 노드를 처리하는 방법을 배웠다.
 
-### 💡 회고
+### 💬 회고
 
 `render` 함수를 구현하면서 Virtual DOM 객체가 실제 DOM으로 변환되어 브라우저 화면에 표시되는 과정을 이해할 수 있었다.  
 특히 재귀를 통해 트리 구조를 순회하며 요소를 생성하고 부모 노드에 추가하는 방식이 흥미로웠다.  
@@ -323,7 +326,7 @@ export { render };
 
 ---
 
-#### 코드 예제
+#### 📂 코드 예제
 
 ```javascript
 // core/useState.js
@@ -378,7 +381,7 @@ export function resetStateIndex() {
 
 ---
 
-### 💡 회고
+### 💬 회고
 
 `useState`를 직접 구현하면서 상태 관리와 재렌더링의 원리를 깊이 있게 이해할 수 있었다. 특히 상태 인덱스를 활용하여 여러 상태를 관리하는 방법과, 상태 변경 시 컴포넌트를 재렌더링하여 UI를 업데이트하는 과정이 인상적이었다. 
 카운터 예제를 통해 이러한 개념을 실습하며 React의 핵심 기능을 체득할 수 있었다.
@@ -422,7 +425,7 @@ export function resetStateIndex() {
 
 ---
 
-### 코드 예제
+### 📂 코드 예제
 
 ```javascript
 import { useState } from "../core/useState";
@@ -476,7 +479,7 @@ export default function Todo() {
 
 ---
 
-### 💡 회고
+### 💬 회고
 
 TODO 리스트 애플리케이션을 작성하며 상태 관리와 이벤트 처리의 기본 원리를 체득할 수 있었다. 상태 변경에 따라 UI가 동적으로 갱신되는 과정을 실습하면서 React의 상태 관리 메커니즘을 조금 더 깊이 이해하게 되었다.
 
@@ -553,7 +556,7 @@ Virtual DOM 비교(diffing) 알고리즘을 구현하고, 이벤트 처리와 �
   - 노드의 속성이나 텍스트가 변경된 경우 DOM을 업데이트한다.
   - 자식 노드를 재귀적으로 비교한다.
 
-#### 코드 예제
+#### 📂 코드 예제
 
 ````javascript
 // diff.js
@@ -603,7 +606,7 @@ export { diff };
 3. **최소 DOM 업데이트**
    - 속성 변경, 노드 추가/삭제, 텍스트 변경 등 실제 DOM 조작을 최소화하여 렌더링 성능을 향상시킬 수 있음을 배웠다.
 
-### 💡 회고
+### 💬 회고
 
 `diff` 알고리즘 구현을 통해 Virtual DOM의 비교 및 최소 DOM 업데이트의 중요성을 깨달았다.  
 특히 재귀적으로 트리를 순회하며 변경 사항을 찾아내는 과정이 흥미로웠으며, DOM 업데이트 비용을 최소화하는 원리를 구체적으로 이해할 수 있었다.  
@@ -624,14 +627,131 @@ export { diff };
 
 ---
 
-<details>
-<summary><strong>Day 3-4: </strong></summary>
+<details> 
+<summary><strong>Day 3-4: 이벤트 처리 및 Synthetic Event 시스템 구현</strong></summary>
+
+### 📌 핵심 목표
+사용자와의 상호작용을 처리하기 위해 이벤트 시스템을 구현하고, Synthetic Event 시스템을 통해 브라우저 간 이벤트 처리 차이를 통일하며, 이벤트 위임을 통해 효율적인 이벤트 처리를 구현한다.
+
+---
+
+### 📚 핵심 단어
+
+1. **Synthetic Event**
+   - 브라우저의 이벤트 객체를 래핑하여 React가 통일된 방식으로 이벤트를 처리할 수 있게 해주는 시스템.
+   - 이벤트 전파 제어 및 기본 동작 방지 같은 기능을 일관되게 제공한다.
+
+2. **이벤트 위임**
+   - 이벤트를 개별 DOM 요소에 붙이는 대신, 상위 컨테이너에 등록하여 모든 하위 요소의 이벤트를 한 번에 처리하는 방식.
+   - 성능 최적화에 유리하며, 많은 DOM 노드를 효율적으로 관리할 수 있다.
+
+3. **Virtual DOM과 이벤트**
+   - Virtual DOM의 `props`에서 이벤트 핸들러를 가져와 실제 DOM에 등록하여 JSX 기반 이벤트 처리를 구현한다.
+
+---
+
+### 🛠️ 필수 작업
+
+1. **Synthetic Event 시스템 구현**
+   - 브라우저의 이벤트 객체를 래핑하여 이벤트 전파 제어 및 기본 동작 방지를 처리.
+   - Synthetic Event 객체를 재사용하여 메모리 사용 최적화.
+
+2. **이벤트 위임 구현**
+   - 상위 컨테이너에 이벤트를 등록하여 모든 DOM 이벤트를 한 곳에서 처리.
+   - 이벤트 위임 활성화를 위한 `addEventDelegation` 함수 구현.
+
+3. **상태 변경에 따른 UI 업데이트 확인**
+   - Counter 및 Todo 컴포넌트를 테스트하여 상태 변경 시 Virtual DOM과 실제 DOM의 동기화 확인.
+
+---
+
+### 📂 코드 예제
+
+#### Synthetic Event 시스템
+````javascript
+function createSyntheticEvent(nativeEvent) {
+  const syntheticEvent = {
+    nativeEvent,
+    isDefaultPrevented: false,
+    isPropagationStopped: false,
+    preventDefault() {
+      this.isDefaultPrevented = true;
+      nativeEvent.preventDefault();
+    },
+    stopPropagation() {
+      this.isPropagationStopped = true;
+      nativeEvent.stopPropagation();
+    },
+  };
+  return syntheticEvent;
+}
+
+export { createSyntheticEvent };
+````
+
+---
+
+#### 이벤트 위임 시스템
+````javascript
+function handleEvent(eventType, nativeEvent) {
+  const syntheticEvent = createSyntheticEvent(nativeEvent);
+  let target = nativeEvent.target;
+
+  while (target) {
+    const handler = target[eventType];
+    if (handler) {
+      handler(syntheticEvent);
+      if (syntheticEvent.isPropagationStopped) break;
+    }
+    target = target.parentNode;
+  }
+}
+
+let isDelegationActive = false;
+
+function addEventDelegation(container) {
+  if (isDelegationActive) return;
+  isDelegationActive = true;
+
+  container.addEventListener("click", (event) => handleEvent("onClick", event));
+  container.addEventListener("input", (event) => handleEvent("onInput", event));
+}
+
+export { addEventDelegation };
+````
+
+---
+
+### 💡 배운 점
+
+1. **Synthetic Event의 중요성**
+   - 브라우저 간 이벤트 차이를 추상화하여 코드의 일관성을 유지할 수 있었다.
+   - 객체를 재사용하는 방식을 통해 메모리 사용 효율성을 체득했다.
+
+2. **이벤트 위임의 효율성**
+   - 이벤트 리스너를 개별 노드가 아닌 상위 컨테이너에 한 번만 등록함으로써 성능을 최적화할 수 있었다.
+   - 많은 DOM 노드에서 발생하는 이벤트도 효율적으로 관리 가능했다.
+
+3. **Virtual DOM과의 연동**
+   - Virtual DOM의 props에서 이벤트 핸들러를 가져와 DOM에 등록함으로써 JSX 기반 이벤트 처리를 구현할 수 있었다.
+   - 상태 변경에 따른 Virtual DOM 갱신과 실제 DOM 업데이트의 차이를 명확히 이해했다.
+
+---
+
+### 💬 회고
+
+Synthetic Event 시스템과 이벤트 위임을 구현하면서 React의 이벤트 처리 방식이 왜 효율적인지 더 깊이 이해할 수 있었다.  
+특히, 브라우저 간 이벤트 차이를 숨기고 일관된 이벤트 처리 환경을 제공하는 것이 얼마나 중요한지 체감할 수 있었다.  
+Todo와 Counter 컴포넌트를 통해 Synthetic Event와 상태 관리가 자연스럽게 동작하며, UI가 업데이트되는 과정을 확인할 수 있었다.  
+
+앞으로 더 복잡한 상태 관리나 다양한 이벤트 처리를 추가하며, 더욱 확장된 시스템을 구현해보고 싶다.
+
 </details>
 
 ---
 
 <details>
-<summary><strong>Day 5-6: </strong></summary>
+<summary><strong>Day 5: 추가적인 훅(useEffect) 구현 및 컴포넌트 생명주기 관리 </strong></summary>
 </details>
 
 
