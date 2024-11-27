@@ -1,6 +1,7 @@
 import { render } from "./core/render";
 import App from "./components/App";
 import { resetStateIndex, setRerenderFunc } from "./core/useState";
+import { addEventDelegation } from "./core/addEventDelegation";
 
 const container = document.getElementById("app");
 
@@ -13,6 +14,9 @@ function renderApp() {
   render(appElement, container); // Virtual DOM 렌더링
   console.log(JSON.stringify(appElement, null, 2));
 }
+
+// 이벤트 위임 활성화
+addEventDelegation(container);
 
 // 재렌더링 함수 설정
 setRerenderFunc(renderApp);
