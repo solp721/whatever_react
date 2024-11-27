@@ -5,8 +5,10 @@ export default function Todo() {
   const [input, setInput] = useState("");
 
   function addTodo() {
-    setTodos([...todos, input]);
-    setInput("");
+    if (input.trim()) {
+      setTodos([...todos, input]);
+      setInput("");
+    }
   }
 
   return (
@@ -19,8 +21,8 @@ export default function Todo() {
       />
       <button onclick={addTodo}>추가</button>
       <ul>
-        {todos.map((todo) => (
-          <li>{todo}</li>
+        {todos.map((todo, index) => (
+          <li key={index}>{todo}</li>
         ))}
       </ul>
     </div>
