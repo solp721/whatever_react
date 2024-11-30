@@ -1,6 +1,6 @@
 import { render } from "./core/render";
 import App from "./components/App";
-import { resetStateIndex, setRerenderFunc } from "./core/useState";
+import { resetStateIndex, setRerenderFunc } from "./core/hooks/useState";
 import { addEventDelegation } from "./core/addEventDelegation";
 
 const container = document.getElementById("app");

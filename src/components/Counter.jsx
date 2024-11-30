@@ -1,4 +1,4 @@
-import { useState } from "../core/useState";
+import { useState } from "../core/hooks/useState";
 
 function Counter() {
   const [count, setCount] = useState(0);

@@ -1,4 +1,4 @@
-import { useState } from "../core/useState";
+import { useState } from "../core/hooks/useState";
 
 export default function Todo() {
   const [todos, setTodos] = useState([]);
