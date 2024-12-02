@@ -751,7 +751,142 @@ Todo와 Counter 컴포넌트를 통해 Synthetic Event와 상태 관리가 자�
 ---
 
 <details>
-<summary><strong>Day 5: 추가적인 훅(useEffect) 구현 및 컴포넌트 생명주기 관리 </strong></summary>
+<summary><strong>Day 5: 추가적인 훅(`useEffect`) 구현 및 컴포넌트 생명주기 관리</strong></summary>
+
+### 📌 핵심 목표
+`useEffect` 훅을 구현하여 컴포넌트의 마운트, 업데이트, 언마운트 생명주기를 관리하고, 클린업 로직을 통해 메모리 누수를 방지하며, 사이드 이펙트를 효율적으로 처리한다.
+
+---
+
+### 📚 핵심 단어
+
+1. **컴포넌트 생명주기**
+   - 컴포넌트가 생성(마운트), 상태 또는 속성의 변경으로 인해 업데이트, 그리고 제거(언마운트)되는 일련의 과정.
+   - **마운트(Mount)**: 컴포넌트가 DOM에 삽입되고 초기화 작업을 수행하는 단계. 예: API 호출, 이벤트 리스너 등록.
+   - **업데이트(Update)**: 컴포넌트의 상태(state)나 속성(props)이 변경되어 DOM이 갱신되는 단계. 
+   - **언마운트(Unmount)**: 컴포넌트가 DOM에서 제거되고 리소스를 해제하는 단계. 예: 타이머 제거, 이벤트 리스너 해제.
+
+2. **`useEffect`**
+   - 컴포넌트 생명주기에 맞춰 특정 작업(사이드 이펙트)을 실행하기 위한 훅.
+   - 마운트 시 초기화 작업, 의존성 배열을 활용한 조건부 실행, 언마운트 시 정리 작업을 관리.
+
+3. **클린업 함수**
+   - `useEffect` 내부에서 반환하는 함수로, 컴포넌트가 언마운트될 때 실행되어 불필요한 리소스를 해제.
+   - 타이머나 이벤트 리스너와 같은 리소스를 정리해 메모리 누수를 방지.
+
+---
+
+### 🛠️ 필수 작업
+
+1. **`useEffect` 훅 구현**
+   - 의존성 배열을 통해 특정 값이 변경될 때만 이펙트를 실행하도록 구현.
+   - 클린업 로직을 통해 컴포넌트 언마운트 시 불필요한 리소스를 정리.
+
+2. **생명주기 관리**
+   - 컴포넌트의 마운트 시 초기 작업 수행.
+   - 언마운트 시 타이머 및 이벤트 리스너 정리.
+
+3. **테스트**
+   - 타이머 컴포넌트를 통해 마운트, 업데이트, 언마운트 생명주기 관리를 확인.
+
+---
+
+### 📂 코드 예제
+
+#### **`useEffect` 구현**
+''''javascript
+let effects = [];
+let effectIndex = 0;
+
+export function useEffect(callback, dependencies) {
+  const currentIndex = effectIndex;
+  const oldDependencies = effects[currentIndex];
+  const hasChanged = !oldDependencies || dependencies.some((dep, i) => dep !== oldDependencies[i]);
+
+  if (hasChanged) {
+    if (effects[currentIndex]?.cleanup) {
+      effects[currentIndex].cleanup(); // 이전 클린업 실행
+    }
+    effects[currentIndex] = {
+      dependencies,
+      cleanup: callback(),
+    };
+  }
+
+  effectIndex++;
+}
+
+export function resetEffectIndex() {
+  effectIndex = 0; // Effect 인덱스 초기화
+}
+''''
+
+---
+
+#### **타이머 컴포넌트**
+````javascript
+import { useState } from "../core/hooks/useState";
+import { useEffect } from "../core/hooks/useEffect";
+
+function Timer() {
+  const [time, setTime] = useState(0);
+  const [isRunning, setIsRunning] = useState(true);
+
+  useEffect(() => {
+    if (!isRunning) return; // 타이머 중지 시 실행 안 함
+
+    const interval = setInterval(() => {
+      setTime((prev) => prev + 1);
+    }, 1000);
+
+    return () => {
+      clearInterval(interval); // 타이머 정리
+      console.log("타이머 정리 완료");
+    };
+  }, [isRunning]); // isRunning 변경 시 실행
+
+  return (
+    <div>
+      <div>경과 시간: {time}초</div>
+      <button onclick={() => setIsRunning((prev) => !prev)}>
+        {isRunning ? "타이머 중지" : "타이머 시작"}
+      </button>
+    </div>
+  );
+}
+
+export default Timer;
+````
+
+---
+
+### 💡 배운 점
+
+1. **생명주기 관리의 중요성**:
+   - 컴포넌트의 마운트, 업데이트, 언마운트 단계에 따라 적절한 작업을 처리할 수 있었다.
+   - 특히, 마운트 단계에서 초기화 작업(API 호출, 타이머 설정 등)과 언마운트 단계에서 리소스 해제가 필요하다는 점을 명확히 이해했다.
+
+2. **클린업 로직의 활용**:
+   - 타이머와 같은 지속적인 작업을 언마운트 시 정리하여 메모리 누수를 방지했다.
+   - 클린업 함수의 사용이 리소스 관리에 필수적임을 배웠다.
+
+3. **`useState`와 `useEffect`의 조합**:
+   - 상태 변경에 따른 효과적인 사이드 이펙트 처리 방법을 체득.
+   - 예를 들어, `isRunning` 상태에 따라 타이머를 동적으로 제어하는 로직을 구현했다.
+
+4. **의존성 배열의 활용**:
+   - 의존성 배열을 통해 특정 상태 변경 시에만 이펙트가 실행되도록 최적화했다.
+   - 불필요한 작업 실행을 줄여 성능을 높였다.
+
+---
+
+### 💬 회고
+
+`useEffect` 훅을 직접 구현하며, React의 컴포넌트 생명주기 관리 방식의 유연성과 강력함을 이해할 수 있었다.  
+특히 타이머와 같은 지속적인 작업에서 클린업이 얼마나 중요한지 체감했으며, 리액트가 이 작업을 자동화해주는 이유를 명확히 알게 되었다.  
+다음 단계에서는 API 호출 등 더 복잡한 사이드 이펙트를 처리할 수 있는 예제를 추가해보고 싶다.
+
 </details>
+
 
 
