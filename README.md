@@ -794,7 +794,7 @@ Todo와 Counter 컴포넌트를 통해 Synthetic Event와 상태 관리가 자�
 ### 📂 코드 예제
 
 #### **`useEffect` 구현**
-''''javascript
+````javascript
 let effects = [];
 let effectIndex = 0;
 
@@ -819,7 +819,7 @@ export function useEffect(callback, dependencies) {
 export function resetEffectIndex() {
   effectIndex = 0; // Effect 인덱스 초기화
 }
-''''
+````
 
 ---
 
